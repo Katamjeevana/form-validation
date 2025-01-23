@@ -1,72 +1,113 @@
-const form = document.getElementById('form');
-const username = document.getElementById('username');
-const email = document.getElementById('email');
-const password = document.getElementById('password');
-const password2 = document.getElementById('password2');
+const form = document.getElementById("form")
 
-form.addEventListener('submit', e => {
-  e.preventDefault();
 
-  validateInputs();
-});
 
-const setError = (element, message) => {
-  const inputControl = element.parentElement;
-  const errorDisplay = inputControl.querySelector('.error');
+const uname = document.getElementById("uname")
 
-  errorDisplay.innerText = message;
-  inputControl.classList.add('error');
-  inputControl.classList.remove('success')
-}
 
-const setSuccess = element => {
-  const inputControl = element.parentElement;
-  const errorDisplay = inputControl.querySelector('.error');
+const email = document.getElementById("email")
 
-  errorDisplay.innerText = '';
-  inputControl.classList.add('success');
-  inputControl.classList.remove('error');
-};
 
-const isValidEmail = email => {
-  const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return re.test(String(email).toLowerCase());
-}
 
-const validateInputs = () => {
-  const usernameValue = username.value.trim();
-  const emailValue = email.value.trim();
-  const passwordValue = password.value.trim();
-  const password2Value = password2.value.trim();
+const password = document.getElementById("password")
 
-  if (usernameValue === '') {
-    setError(username, 'Username is required');
-  } else {
-    setSuccess(username);
+const cpassword = document.getElementById("cpassword")
+
+const tandc = document.getElementById("tc")
+
+
+form.addEventListener('submit', (e) => {
+
+  e.preventDefault()
+  validate()
+})
+
+
+
+function validate() {
+  let nameValue = uname.value.trim()
+  let emailValue = email.value.trim()
+  let passwordValue = password.value.trim()
+  let cpasswordValue = cpassword.value.trim()
+
+
+  //User name check
+
+  if (nameValue === '') {
+    setError(uname, 'user name cannot be empty')
   }
-
+  else if (nameValue.length < 3) {
+    setError(uname, 'user name should be minimum 3 characters')
+  }
+  else {
+    setSuccesss(uname)
+  }
+  //email check
   if (emailValue === '') {
-    setError(email, 'Email is required');
-  } else if (!isValidEmail(emailValue)) {
-    setError(email, 'Provide a valid email address');
-  } else {
-    setSuccess(email);
+    setError(email, 'Eamil cannot be empty')
   }
+  else if (!emailCheck(emailValue)) {
+    setError(email, 'Enter Valid Email Id')
+  }
+  else {
+    setSuccesss(email)
+  }
+
+
+  //Password check
 
   if (passwordValue === '') {
-    setError(password, 'Password is required');
-  } else if (passwordValue.length < 8) {
-    setError(password, 'Password must be at least 8 character.')
-  } else {
-    setSuccess(password);
+    setError(password, 'password cannot be empty')
+  }
+  else if (passwordValue.length < 8) {
+    setError(password, 'user name should be minimum 8 characters')
+  }
+  else {
+    setSuccesss(password)
   }
 
-  if (password2Value === '') {
-    setError(password2, 'Please confirm your password');
-  } else if (password2Value !== passwordValue) {
-    setError(password2, "Passwords doesn't match");
-  } else {
-    setSuccess(password2);
+
+  //Confirm Password check
+
+  if (cpasswordValue === '') {
+    setError(cpassword, 'password cannot be empty')
+  }
+  else if (cpasswordValue !== passwordValue) {
+    setError(cpassword, 'passwords not matched')
+  }
+  else {
+    setSuccesss(cpassword)
   }
 
-};
+  //Terms and conditions check
+
+  if (!tandc.checked) {
+
+    setError(tc, 'click on agree terms checkbox')
+  }
+  else {
+    setSuccesss(tc)
+  }
+
+
+  function setError(input, message) {
+    let parent = input.parentElement;
+    let small = parent.querySelector('small')
+    small.innerText = message
+    parent.classList.add('error')
+    parent.classList.remove('success')
+  }
+  function setSuccesss(input) {
+    let parent = input.parentElement;
+    parent.classList.add('success')
+    parent.classList.remove('error')
+  }
+
+
+  function emailCheck(input) {
+    let emailReg = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
+    let valid = emailReg.test(input)
+    return valid
+  }
+}
+
